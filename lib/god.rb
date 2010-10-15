@@ -28,7 +28,7 @@ module God
     # upstart- start god at boot, respawn when necessary
     path = Facter.lsbdistrelease.to_f < 10 ? "/etc/event.d/god" : "/etc/init/god.conf"
     file "#{path}",
-        :content => File.read("#{File.dirname(__FILE__)}/../templates/god.upstart"),
+        :content => template("#{File.dirname(__FILE__)}/../templates/god.upstart.erb", binding),
         :notify => exec('restart_god')
 
     exec 'restart_god',
